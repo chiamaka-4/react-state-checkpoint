@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      person: {
+        fullName: "Chiamaka Nwosu",
+        bio: "I'm a student of Full stack web development.",
+        imgSrc: "myPic.jpeg",
+        profession: "Fashion Designer",
+      },
+      show: false,
+      mountTime: new Date(),
+    };
+  }
+
+  toggleShow = () => {
+    this.setState((prevState) => ({ show: !prevState.show }));
+  };
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.setState({ mountTime: new Date() });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    const { person, show, mountTime } = this.state;
+
+    return (
+      <div className="App">
+        <h1>React State Checkpoint</h1>
+        <button onClick={this.toggleShow}>Toggle Profile</button>
+        {show && (
+          <div>
+            <h2>{person.fullName}</h2>
+            <p>{person.bio}</p>
+            <img src={person.imgSrc} alt={person.fullName} />
+            <p>Profession: {person.profession}</p>
+          </div>
+        )}
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Time since mount: {Math.floor((new Date() - mountTime) / 1000)}{" "}
+          seconds
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App;
